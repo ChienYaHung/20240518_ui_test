@@ -1,0 +1,1 @@
+pyside6-uic.exe -o test_ui.py gui-1.ui
