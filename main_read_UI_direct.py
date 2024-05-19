@@ -12,15 +12,15 @@ class HBMainWindow:
             print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
             sys.exit(-1)
         loader = QUiLoader()
+        self.app = QApplication([])
         self.ui = loader.load(ui_file)
-        ui_file.close()
-        if not self.ui:
-            print(loader.errorString())
-            sys.exit(-1)
+        # ui_file.close()
+        # if not self.ui:
+        #     print(loader.errorString())
+        #     sys.exit(-1)
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
     hb_window = HBMainWindow()
-    hb_window.show()
-    sys.exit(app.exec())
+    hb_window.ui.show()
+    hb_window.app.exec()
