@@ -1,1 +1,1 @@
-pyside6-uic.exe -o test_ui.py gui-1.ui
+pyside6-uic.exe -o gui-1.py gui-1.ui
