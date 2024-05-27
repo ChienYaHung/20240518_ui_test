@@ -1,8 +1,9 @@
 import sys
+from PySide6 import QtCore
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt, QFile, QIODevice)
+# from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+#                             QMetaObject, QObject, QPoint, QRect,
+#                             QSize, QTime, QUrl, Qt, QFile, QIODevice)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
                            QFont, QFontDatabase, QGradient, QIcon,
                            QImage, QKeySequence, QLinearGradient, QPainter,
@@ -22,10 +23,10 @@ class HBMainWindow:
     def __init__(self) -> None:
 
         ui_file_name = "gui-1.ui"  # 設定UI檔案名稱
-        ui_file = QFile(ui_file_name)  # 建立用來讀取UI檔的物件
+        ui_file = QtCore.QFile(ui_file_name)  # 建立用來讀取UI檔的物件
 
         # 檔案若無法讀取的錯誤訊息
-        if not ui_file.open(QIODevice.ReadOnly):
+        if not ui_file.open(QtCore.QIODevice.ReadOnly):
             print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
             sys.exit(-1)
 
@@ -47,22 +48,18 @@ class HBMainWindow:
             print(loader.errorString())
             sys.exit(-1)
 
+        self.gender = '男'
+
         # slot區
-        # 按鍵動作測試
         self.ui.save_data_button.clicked.connect(self.save_input_to_directory)
+        self.ui.gender_man.toggled.connect(
+            lambda: self.gender_select(self.ui.gender_man))
+        self.ui.gender_woman.toggled.connect(
+            lambda: self.gender_select(self.ui.gender_woman))
+        self.ui.gender_other.toggled.connect(
+            lambda: self.gender_select(self.ui.gender_other))
 
-    # def say_hello(self):
-    #     font = QFont()
-    #     font.setPointSize(14)
-    #     self.ui.input_display.setPlainText('Hello world!\nRun correctly')
-
-    def save_input_test(self):
-        row_count = self.ui.directory_table.rowCount()
-        column_count = self.ui.directory_table.columnCount()
-        # human_name = self.ui.name_input.text()
-        self.ui.test_message.setText(
-            f'row: {row_count}; column:{column_count}')
-
+    @QtCore.Slot()
     def save_input_to_directory(self) -> None:
         '''
         儲存通訊錄資訊至表格內
@@ -75,13 +72,17 @@ class HBMainWindow:
         # 從輸入區抓取資訊
         human_name = self.ui.name_input.text()
         _human_name = QTableWidgetItem(human_name)  # 需轉成Item格式
-        # _human_gander = QTableWidgetItem(f'{human_name}')
+        _human_gander = QTableWidgetItem(f'{self.gender}')
         # _human_job = QTableWidgetItem(f'{human_name}')
         # _human_date = QTableWidgetItem(f'{human_name}')
 
         # 存入表格
         self.ui.directory_table.setItem(row_count, 0, _human_name)
+        self.ui.directory_table.setItem(row_count, 1, _human_gander)
         self.ui.test_message.setText(f'row: {row_count}')
+
+    def gender_select(self, button) -> str:
+        self.gender = button.text()
 
 
 if __name__ == "__main__":

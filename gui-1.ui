@@ -130,10 +130,13 @@
              <property name="text">
               <string>男</string>
              </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="gander_woman">
+            <widget class="QRadioButton" name="gender_woman">
              <property name="text">
               <string>女</string>
              </property>
