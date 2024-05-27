@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -273,6 +273,33 @@
       </layout>
      </item>
      <item>
+      <widget class="QTableWidget" name="directory_table">
+       <property name="rowCount">
+        <number>0</number>
+       </property>
+       <column>
+        <property name="text">
+         <string>姓名</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>性別</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>生日</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>職業</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
       <widget class="Line" name="line_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -280,7 +307,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="input_display"/>
+      <widget class="QLineEdit" name="test_message"/>
      </item>
     </layout>
    </widget>

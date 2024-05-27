@@ -16,10 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
-    QHBoxLayout, QLabel, QLineEdit, QMainWindow,
-    QMenuBar, QPlainTextEdit, QPushButton, QRadioButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QVBoxLayout,
-    QWidget)
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QMainWindow, QMenuBar, QPushButton, QRadioButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,17 +28,17 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 600)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.widget = QWidget(self.centralwidget)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(20, 30, 458, 317))
-        self.verticalLayout_4 = QVBoxLayout(self.widget)
+        self.layoutWidget = QWidget(self.centralwidget)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(20, 30, 458, 317))
+        self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_2 = QLabel(self.widget)
+        self.label_2 = QLabel(self.layoutWidget)
         self.label_2.setObjectName(u"label_2")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.label = QLabel(self.widget)
+        self.label = QLabel(self.layoutWidget)
         self.label.setObjectName(u"label")
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
@@ -60,7 +60,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.label_3 = QLabel(self.widget)
+        self.label_3 = QLabel(self.layoutWidget)
         self.label_3.setObjectName(u"label_3")
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label_3)
 
-        self.label_4 = QLabel(self.widget)
+        self.label_4 = QLabel(self.layoutWidget)
         self.label_4.setObjectName(u"label_4")
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy)
@@ -85,24 +85,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.name_input = QLineEdit(self.widget)
+        self.name_input = QLineEdit(self.layoutWidget)
         self.name_input.setObjectName(u"name_input")
 
         self.verticalLayout_2.addWidget(self.name_input)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.gender_man = QRadioButton(self.widget)
+        self.gender_man = QRadioButton(self.layoutWidget)
         self.gender_man.setObjectName(u"gender_man")
 
         self.horizontalLayout.addWidget(self.gender_man)
 
-        self.gander_woman = QRadioButton(self.widget)
+        self.gander_woman = QRadioButton(self.layoutWidget)
         self.gander_woman.setObjectName(u"gander_woman")
 
         self.horizontalLayout.addWidget(self.gander_woman)
 
-        self.gender_other = QRadioButton(self.widget)
+        self.gender_other = QRadioButton(self.layoutWidget)
         self.gender_other.setObjectName(u"gender_other")
 
         self.horizontalLayout.addWidget(self.gender_other)
@@ -112,7 +112,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.comboBox = QComboBox(self.widget)
+        self.comboBox = QComboBox(self.layoutWidget)
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -130,7 +130,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
-        self.dateEdit = QDateEdit(self.widget)
+        self.dateEdit = QDateEdit(self.layoutWidget)
         self.dateEdit.setObjectName(u"dateEdit")
 
         self.verticalLayout_2.addWidget(self.dateEdit)
@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
 
-        self.line = QFrame(self.widget)
+        self.line = QFrame(self.layoutWidget)
         self.line.setObjectName(u"line")
         self.line.setFrameShape(QFrame.VLine)
         self.line.setFrameShadow(QFrame.Sunken)
@@ -151,19 +151,19 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.save_data_button = QPushButton(self.widget)
+        self.save_data_button = QPushButton(self.layoutWidget)
         self.save_data_button.setObjectName(u"save_data_button")
         self.save_data_button.setFont(font)
 
         self.verticalLayout_3.addWidget(self.save_data_button)
 
-        self.clear_data_button = QPushButton(self.widget)
+        self.clear_data_button = QPushButton(self.layoutWidget)
         self.clear_data_button.setObjectName(u"clear_data_button")
         self.clear_data_button.setFont(font)
 
         self.verticalLayout_3.addWidget(self.clear_data_button)
 
-        self.remove_data_Button = QPushButton(self.widget)
+        self.remove_data_Button = QPushButton(self.layoutWidget)
         self.remove_data_Button.setObjectName(u"remove_data_Button")
         self.remove_data_Button.setFont(font)
 
@@ -175,17 +175,27 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
 
-        self.line_2 = QFrame(self.widget)
+        self.directory_table = QTableWidget(self.layoutWidget)
+        if (self.directory_table.columnCount() < 4):
+            self.directory_table.setColumnCount(4)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.directory_table.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.directory_table.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.directory_table.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.directory_table.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        self.directory_table.setObjectName(u"directory_table")
+
+        self.verticalLayout_4.addWidget(self.directory_table)
+
+        self.line_2 = QFrame(self.layoutWidget)
         self.line_2.setObjectName(u"line_2")
         self.line_2.setFrameShape(QFrame.HLine)
         self.line_2.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout_4.addWidget(self.line_2)
-
-        self.input_display = QPlainTextEdit(self.widget)
-        self.input_display.setObjectName(u"input_display")
-
-        self.verticalLayout_4.addWidget(self.input_display)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -220,5 +230,13 @@ class Ui_MainWindow(object):
         self.save_data_button.setText(QCoreApplication.translate("MainWindow", u"\u5132\u5b58\u8f38\u5165\u8cc7\u8a0a", None))
         self.clear_data_button.setText(QCoreApplication.translate("MainWindow", u"\u6e05\u9664\u8f38\u5165\u8cc7\u8a0a", None))
         self.remove_data_Button.setText(QCoreApplication.translate("MainWindow", u"\u522a\u9664\u6240\u9078\u8cc7\u6599", None))
+        ___qtablewidgetitem = self.directory_table.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u59d3\u540d", None));
+        ___qtablewidgetitem1 = self.directory_table.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"\u6027\u5225", None));
+        ___qtablewidgetitem2 = self.directory_table.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"\u751f\u65e5", None));
+        ___qtablewidgetitem3 = self.directory_table.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"\u8077\u696d", None));
     # retranslateUi
 
