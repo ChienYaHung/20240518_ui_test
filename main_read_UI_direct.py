@@ -51,7 +51,10 @@ class HBMainWindow:
         self.gender = '男'
 
         # slot區
-        self.ui.save_data_button.clicked.connect(self.save_input_to_directory)
+        self.ui.save_data_button.clicked.connect(
+            self.save_input_to_directory)  # 儲存資訊至表格
+        # 性別選單觸發
+        # 選擇時觸發
         self.ui.gender_man.toggled.connect(
             lambda: self.gender_select(self.ui.gender_man))
         self.ui.gender_woman.toggled.connect(
@@ -71,18 +74,23 @@ class HBMainWindow:
 
         # 從輸入區抓取資訊
         human_name = self.ui.name_input.text()
-        _human_name = QTableWidgetItem(human_name)  # 需轉成Item格式
-        _human_gander = QTableWidgetItem(f'{self.gender}')
-        # _human_job = QTableWidgetItem(f'{human_name}')
+        human_job = self.ui.job_box.currentText()
+        # 需轉成Item格式
+        _human_name = QTableWidgetItem(human_name)
+        _human_gender = QTableWidgetItem(f'{self.gender}')
+        _human_job = QTableWidgetItem(f'{human_job}')
         # _human_date = QTableWidgetItem(f'{human_name}')
 
         # 存入表格
         self.ui.directory_table.setItem(row_count, 0, _human_name)
-        self.ui.directory_table.setItem(row_count, 1, _human_gander)
-        self.ui.test_message.setText(f'row: {row_count}')
+        self.ui.directory_table.setItem(row_count, 1, _human_gender)
+        self.ui.directory_table.setItem(row_count, 2, _human_job)
+        # self.ui.test_message.setText(f'row: {row_count}')
 
-    def gender_select(self, button) -> str:
+    # 設定性別
+    def gender_select(self, button) -> None:
         self.gender = button.text()
+        self.ui.test_message.setText(f'性別: {self.gender}')
 
 
 if __name__ == "__main__":
