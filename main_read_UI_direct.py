@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
                                QHBoxLayout, QHeaderView, QLabel, QLineEdit,
                                QMainWindow, QMenuBar, QPushButton, QRadioButton,
                                QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
-                               QTableWidgetItem, QVBoxLayout, QWidget)
+                               QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox)
 
 
 class HBMainWindow:
@@ -71,35 +71,48 @@ class HBMainWindow:
         儲存通訊錄資訊至表格內
         '''
 
-        # 新增一行
-        row_count = self.ui.directory_table.rowCount()
-        self.ui.directory_table.insertRow(row_count)
-
         # 從輸入區抓取資訊
         human_name = self.ui.name_input.text()
-        # 需轉成Item格式
-        _human_name = QTableWidgetItem(human_name)
-        _human_gender = QTableWidgetItem(f'{self.gender}')
-        _human_job = QTableWidgetItem(f'{self.job}')
-        # _human_date = QTableWidgetItem(f'{human_name}')
 
-        # 存入表格
-        self.ui.directory_table.setItem(row_count, 0, _human_name)
-        self.ui.directory_table.setItem(row_count, 1, _human_gender)
-        self.ui.directory_table.setItem(row_count, 2, _human_job)
-        # self.ui.test_message.setText(f'row: {row_count}')
+        # 檢查姓名是否為空
+        if human_name == '':
+            self.empty_name_warning_message()
+        else:
+
+            # 新增一行
+            row_count = self.ui.directory_table.rowCount()
+            self.ui.directory_table.insertRow(row_count)
+
+            # 需轉成Item格式
+            _human_name = QTableWidgetItem(human_name)
+            _human_gender = QTableWidgetItem(f'{self.gender}')
+            _human_job = QTableWidgetItem(f'{self.job}')
+            # _human_date = QTableWidgetItem(f'{human_name}')
+
+            # 存入表格
+            self.ui.directory_table.setItem(row_count, 0, _human_name)
+            self.ui.directory_table.setItem(row_count, 1, _human_gender)
+            self.ui.directory_table.setItem(row_count, 2, _human_job)
+            # self.ui.test_message.setText(f'row: {row_count}')
 
     # 設定性別
+    @QtCore.Slot()
     def gender_select(self, button) -> None:
         self.gender = button.text()
         # 測試訊息
         self.ui.test_message.setText(f'性別: {self.gender}')
 
     # 下拉式選單的訊號測試
+    @QtCore.Slot()
     def job_select(self, index, combo_box) -> None:
         self.job = combo_box.currentText()
         # 測試訊息
         self.ui.test_complex_message.setPlainText(f'職業: {self.job}\n第{index}項')
+
+    # 檢查姓名欄是否為空
+    def empty_name_warning_message(self):
+        msgBox = QMessageBox.warning(
+            self.ui, '內容異常', '請輸入姓名', QMessageBox.Ok, QMessageBox.Ok)
 
 
 if __name__ == "__main__":

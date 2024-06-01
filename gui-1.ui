@@ -244,14 +244,26 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="save_xlsx_button">
+            <widget class="QPushButton" name="save_csv_button">
              <property name="font">
               <font>
                <pointsize>12</pointsize>
               </font>
              </property>
              <property name="text">
-              <string>輸出xlsx檔</string>
+              <string>輸出檔案</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="read_csv_button">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>讀取檔案</string>
              </property>
             </widget>
            </item>
