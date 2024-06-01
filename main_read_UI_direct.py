@@ -49,6 +49,7 @@ class HBMainWindow:
             sys.exit(-1)
 
         self.gender = '男'
+        self.job = self.ui.job_box.currentText()
 
         # slot區
         self.ui.save_data_button.clicked.connect(
@@ -61,6 +62,8 @@ class HBMainWindow:
             lambda: self.gender_select(self.ui.gender_woman))
         self.ui.gender_other.toggled.connect(
             lambda: self.gender_select(self.ui.gender_other))
+        self.ui.job_box.activated.connect(
+            lambda x: self.job_select(x, self.ui.job_box))
 
     @QtCore.Slot()
     def save_input_to_directory(self) -> None:
@@ -74,11 +77,10 @@ class HBMainWindow:
 
         # 從輸入區抓取資訊
         human_name = self.ui.name_input.text()
-        human_job = self.ui.job_box.currentText()
         # 需轉成Item格式
         _human_name = QTableWidgetItem(human_name)
         _human_gender = QTableWidgetItem(f'{self.gender}')
-        _human_job = QTableWidgetItem(f'{human_job}')
+        _human_job = QTableWidgetItem(f'{self.job}')
         # _human_date = QTableWidgetItem(f'{human_name}')
 
         # 存入表格
@@ -90,7 +92,14 @@ class HBMainWindow:
     # 設定性別
     def gender_select(self, button) -> None:
         self.gender = button.text()
+        # 測試訊息
         self.ui.test_message.setText(f'性別: {self.gender}')
+
+    # 下拉式選單的訊號測試
+    def job_select(self, index, combo_box) -> None:
+        self.job = combo_box.currentText()
+        # 測試訊息
+        self.ui.test_complex_message.setPlainText(f'職業: {self.job}\n第{index}項')
 
 
 if __name__ == "__main__":
