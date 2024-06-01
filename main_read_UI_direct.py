@@ -1,5 +1,5 @@
 import sys
-from PySide6 import QtCore
+from PySide6.QtCore import *
 from PySide6.QtUiTools import QUiLoader
 # from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 #                             QMetaObject, QObject, QPoint, QRect,
@@ -8,11 +8,13 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
                            QFont, QFontDatabase, QGradient, QIcon,
                            QImage, QKeySequence, QLinearGradient, QPainter,
                            QPalette, QPixmap, QRadialGradient, QTransform, QColor, QFont)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
-                               QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                               QMainWindow, QMenuBar, QPushButton, QRadioButton,
-                               QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
-                               QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox)
+# from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
+#                                QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+#                                QMainWindow, QMenuBar, QPushButton, QRadioButton,
+#                                QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
+#                                QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox)
+
+from PySide6.QtWidgets import *
 
 
 class HBMainWindow:
@@ -23,10 +25,10 @@ class HBMainWindow:
     def __init__(self) -> None:
 
         ui_file_name = "gui-1.ui"  # 設定UI檔案名稱
-        ui_file = QtCore.QFile(ui_file_name)  # 建立用來讀取UI檔的物件
+        ui_file = QFile(ui_file_name)  # 建立用來讀取UI檔的物件
 
         # 檔案若無法讀取的錯誤訊息
-        if not ui_file.open(QtCore.QIODevice.ReadOnly):
+        if not ui_file.open(QIODevice.ReadOnly):
             print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
             sys.exit(-1)
 
@@ -48,8 +50,12 @@ class HBMainWindow:
             print(loader.errorString())
             sys.exit(-1)
 
+        # 建立UI內部參數
         self.gender = '男'
         self.job = self.ui.job_box.currentText()
+
+        # 讓日期選擇區顯示今天日期
+        self.ui.birthday_input.setDate(QDate.currentDate())
 
         # slot區
         self.ui.save_data_button.clicked.connect(
@@ -65,7 +71,7 @@ class HBMainWindow:
         self.ui.job_box.activated.connect(
             lambda x: self.job_select(x, self.ui.job_box))
 
-    @QtCore.Slot()
+    @Slot()
     def save_input_to_directory(self) -> None:
         '''
         儲存通訊錄資訊至表格內
@@ -73,6 +79,7 @@ class HBMainWindow:
 
         # 從輸入區抓取資訊
         human_name = self.ui.name_input.text()
+        human_birthday = self.ui.birthday_input.date().toString('yyyy/MM/dd')
 
         # 檢查姓名是否為空
         if human_name == '':
@@ -87,23 +94,24 @@ class HBMainWindow:
             _human_name = QTableWidgetItem(human_name)
             _human_gender = QTableWidgetItem(f'{self.gender}')
             _human_job = QTableWidgetItem(f'{self.job}')
-            # _human_date = QTableWidgetItem(f'{human_name}')
+            _human_birthday = QTableWidgetItem(f'{human_birthday}')
 
             # 存入表格
             self.ui.directory_table.setItem(row_count, 0, _human_name)
             self.ui.directory_table.setItem(row_count, 1, _human_gender)
             self.ui.directory_table.setItem(row_count, 2, _human_job)
+            self.ui.directory_table.setItem(row_count, 3, _human_birthday)
             # self.ui.test_message.setText(f'row: {row_count}')
 
     # 設定性別
-    @QtCore.Slot()
+    @Slot()
     def gender_select(self, button) -> None:
         self.gender = button.text()
         # 測試訊息
         self.ui.test_message.setText(f'性別: {self.gender}')
 
     # 下拉式選單的訊號測試
-    @QtCore.Slot()
+    @Slot()
     def job_select(self, index, combo_box) -> None:
         self.job = combo_box.currentText()
         # 測試訊息

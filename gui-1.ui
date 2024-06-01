@@ -190,16 +190,13 @@
             </layout>
            </item>
            <item>
-            <widget class="QDateEdit" name="dateEdit"/>
+            <widget class="QDateEdit" name="birthday_input">
+             <property name="calendarPopup">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="Line" name="line">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_2">
@@ -216,6 +213,13 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -270,6 +274,13 @@
           </layout>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QTableWidget" name="directory_table">
