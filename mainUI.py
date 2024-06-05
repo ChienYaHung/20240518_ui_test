@@ -21,13 +21,13 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
     QRadioButton, QSizePolicy, QSpacerItem, QStatusBar,
     QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1000, 450)
-        MainWindow.setMinimumSize(QSize(1000, 450))
-        self.centralwidget = QWidget(MainWindow)
+class Ui_mainWindow(object):
+    def setupUi(self, mainWindow):
+        if not mainWindow.objectName():
+            mainWindow.setObjectName(u"mainWindow")
+        mainWindow.resize(1000, 450)
+        mainWindow.setMinimumSize(QSize(1000, 450))
+        self.centralwidget = QWidget(mainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayoutWidget = QWidget(self.centralwidget)
         self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
@@ -123,13 +123,18 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
-        self.dateEdit = QDateEdit(self.horizontalLayoutWidget)
-        self.dateEdit.setObjectName(u"dateEdit")
+        self.birthday_input = QDateEdit(self.horizontalLayoutWidget)
+        self.birthday_input.setObjectName(u"birthday_input")
+        self.birthday_input.setCalendarPopup(True)
 
-        self.verticalLayout_2.addWidget(self.dateEdit)
+        self.verticalLayout_2.addWidget(self.birthday_input)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
+
+        self.horizontalSpacer_2 = QSpacerItem(110, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
         self.line = QFrame(self.horizontalLayoutWidget)
         self.line.setObjectName(u"line")
@@ -137,10 +142,6 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QFrame.Sunken)
 
         self.horizontalLayout_3.addWidget(self.line)
-
-        self.horizontalSpacer_2 = QSpacerItem(110, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -156,17 +157,30 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.remove_data_Button)
 
-        self.save_xlsx_button = QPushButton(self.horizontalLayoutWidget)
-        self.save_xlsx_button.setObjectName(u"save_xlsx_button")
-        self.save_xlsx_button.setFont(font)
+        self.save_csv_button = QPushButton(self.horizontalLayoutWidget)
+        self.save_csv_button.setObjectName(u"save_csv_button")
+        self.save_csv_button.setFont(font)
 
-        self.verticalLayout_3.addWidget(self.save_xlsx_button)
+        self.verticalLayout_3.addWidget(self.save_csv_button)
+
+        self.read_csv_button = QPushButton(self.horizontalLayoutWidget)
+        self.read_csv_button.setObjectName(u"read_csv_button")
+        self.read_csv_button.setFont(font)
+
+        self.verticalLayout_3.addWidget(self.read_csv_button)
 
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
+
+        self.line_4 = QFrame(self.horizontalLayoutWidget)
+        self.line_4.setObjectName(u"line_4")
+        self.line_4.setFrameShape(QFrame.HLine)
+        self.line_4.setFrameShadow(QFrame.Sunken)
+
+        self.verticalLayout_4.addWidget(self.line_4)
 
         self.directory_table = QTableWidget(self.horizontalLayoutWidget)
         if (self.directory_table.columnCount() < 4):
@@ -180,7 +194,9 @@ class Ui_MainWindow(object):
         __qtablewidgetitem3 = QTableWidgetItem()
         self.directory_table.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         self.directory_table.setObjectName(u"directory_table")
+        self.directory_table.setEnabled(True)
         self.directory_table.setRowCount(0)
+        self.directory_table.verticalHeader().setVisible(False)
 
         self.verticalLayout_4.addWidget(self.directory_table)
 
@@ -221,47 +237,48 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addLayout(self.verticalLayout_5)
 
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
+        mainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(mainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1000, 21))
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
+        mainWindow.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(mainWindow)
         self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        mainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(mainWindow)
 
-        QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(mainWindow)
     # setupUi
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u59d3\u540d\uff1a", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\u6027\u5225\uff1a", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u8077\u696d\uff1a", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"\u751f\u65e5\uff1a", None))
-        self.gender_man.setText(QCoreApplication.translate("MainWindow", u"\u7537", None))
-        self.gender_woman.setText(QCoreApplication.translate("MainWindow", u"\u5973", None))
-        self.gender_other.setText(QCoreApplication.translate("MainWindow", u"\u5176\u4ed6", None))
-        self.job_box.setItemText(0, QCoreApplication.translate("MainWindow", u"\u58eb", None))
-        self.job_box.setItemText(1, QCoreApplication.translate("MainWindow", u"\u8fb2", None))
-        self.job_box.setItemText(2, QCoreApplication.translate("MainWindow", u"\u5de5", None))
-        self.job_box.setItemText(3, QCoreApplication.translate("MainWindow", u"\u5546", None))
-        self.job_box.setItemText(4, QCoreApplication.translate("MainWindow", u"\u5b78\u751f", None))
-        self.job_box.setItemText(5, QCoreApplication.translate("MainWindow", u"\u5c3c\u7279", None))
+    def retranslateUi(self, mainWindow):
+        mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"\u901a\u8a0a\u9304", None))
+        self.label_2.setText(QCoreApplication.translate("mainWindow", u"\u59d3\u540d\uff1a", None))
+        self.label.setText(QCoreApplication.translate("mainWindow", u"\u6027\u5225\uff1a", None))
+        self.label_3.setText(QCoreApplication.translate("mainWindow", u"\u8077\u696d\uff1a", None))
+        self.label_4.setText(QCoreApplication.translate("mainWindow", u"\u751f\u65e5\uff1a", None))
+        self.gender_man.setText(QCoreApplication.translate("mainWindow", u"\u7537", None))
+        self.gender_woman.setText(QCoreApplication.translate("mainWindow", u"\u5973", None))
+        self.gender_other.setText(QCoreApplication.translate("mainWindow", u"\u5176\u4ed6", None))
+        self.job_box.setItemText(0, QCoreApplication.translate("mainWindow", u"\u58eb", None))
+        self.job_box.setItemText(1, QCoreApplication.translate("mainWindow", u"\u8fb2", None))
+        self.job_box.setItemText(2, QCoreApplication.translate("mainWindow", u"\u5de5", None))
+        self.job_box.setItemText(3, QCoreApplication.translate("mainWindow", u"\u5546", None))
+        self.job_box.setItemText(4, QCoreApplication.translate("mainWindow", u"\u5b78\u751f", None))
+        self.job_box.setItemText(5, QCoreApplication.translate("mainWindow", u"\u5c3c\u7279", None))
 
-        self.save_data_button.setText(QCoreApplication.translate("MainWindow", u"\u5132\u5b58\u8f38\u5165\u8cc7\u8a0a", None))
-        self.remove_data_Button.setText(QCoreApplication.translate("MainWindow", u"\u522a\u9664\u6240\u9078\u8cc7\u6599", None))
-        self.save_xlsx_button.setText(QCoreApplication.translate("MainWindow", u"\u8f38\u51faxlsx\u6a94", None))
+        self.save_data_button.setText(QCoreApplication.translate("mainWindow", u"\u5132\u5b58\u8f38\u5165\u8cc7\u8a0a", None))
+        self.remove_data_Button.setText(QCoreApplication.translate("mainWindow", u"\u522a\u9664\u6240\u9078\u8cc7\u6599", None))
+        self.save_csv_button.setText(QCoreApplication.translate("mainWindow", u"\u8f38\u51fa\u6a94\u6848", None))
+        self.read_csv_button.setText(QCoreApplication.translate("mainWindow", u"\u8b80\u53d6\u6a94\u6848", None))
         ___qtablewidgetitem = self.directory_table.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u59d3\u540d", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("mainWindow", u"\u59d3\u540d", None));
         ___qtablewidgetitem1 = self.directory_table.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"\u6027\u5225", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("mainWindow", u"\u6027\u5225", None));
         ___qtablewidgetitem2 = self.directory_table.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"\u8077\u696d", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("mainWindow", u"\u8077\u696d", None));
         ___qtablewidgetitem3 = self.directory_table.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"\u751f\u65e5", None));
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u6e2c\u8a66\u8a0a\u606f2", None))
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("mainWindow", u"\u751f\u65e5", None));
+        self.label_5.setText(QCoreApplication.translate("mainWindow", u"\u6e2c\u8a66\u8a0a\u606f2", None))
     # retranslateUi
 

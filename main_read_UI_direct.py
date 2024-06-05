@@ -1,29 +1,33 @@
+# -*- coding: utf-8 -*-
 import sys
+
 from PySide6.QtCore import *
 from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import *
+from PySide6.QtWidgets import *
+
+import pandas as pd
 # from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 #                             QMetaObject, QObject, QPoint, QRect,
 #                             QSize, QTime, QUrl, Qt, QFile, QIODevice)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
-                           QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform, QColor, QFont)
+# from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+#                            QFont, QFontDatabase, QGradient, QIcon,
+#                            QImage, QKeySequence, QLinearGradient, QPainter,
+#                            QPalette, QPixmap, QRadialGradient, QTransform, QColor, QFont)
 # from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QFrame,
 #                                QHBoxLayout, QHeaderView, QLabel, QLineEdit,
 #                                QMainWindow, QMenuBar, QPushButton, QRadioButton,
 #                                QSizePolicy, QSpacerItem, QStatusBar, QTableWidget,
 #                                QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox)
 
-from PySide6.QtWidgets import *
 
-
-class HBMainWindow:
+class HBMainWindow(QWidget):
 
     # 使用class方法讀取ui檔
     # 方便在class中添加功能
 
     def __init__(self) -> None:
-
+        super().keyPressEvent(QKeyEvent)
         ui_file_name = "gui-1.ui"  # 設定UI檔案名稱
         ui_file = QFile(ui_file_name)  # 建立用來讀取UI檔的物件
 
@@ -53,6 +57,8 @@ class HBMainWindow:
         # 建立UI內部參數
         self.gender = '男'
         self.job = self.ui.job_box.currentText()
+        self.df_directory = pd.DataFrame(
+            columns=['姓名', '性別', '職業', '生日'])  # 資料表
 
         # 讓日期選擇區顯示今天日期
         self.ui.birthday_input.setDate(QDate.currentDate())
@@ -96,6 +102,11 @@ class HBMainWindow:
             _human_job = QTableWidgetItem(f'{self.job}')
             _human_birthday = QTableWidgetItem(f'{human_birthday}')
 
+            # 存入dataframe
+            _human_data = [human_name, self.gender, self.job, human_birthday]
+            self.df_directory.loc[row_count] = _human_data
+            self.df_directory.to_clipboard(index=False)
+
             # 存入表格
             self.ui.directory_table.setItem(row_count, 0, _human_name)
             self.ui.directory_table.setItem(row_count, 1, _human_gender)
@@ -121,6 +132,20 @@ class HBMainWindow:
     def empty_name_warning_message(self):
         msgBox = QMessageBox.warning(
             self.ui, '內容異常', '請輸入姓名', QMessageBox.Ok, QMessageBox.Ok)
+
+    # 鍵盤Ctrl + C複製
+    def keyPressEvent(self, event) -> None:
+        keycode = event.key()
+        # super().keyPressEvent(event)
+        self.ui.test_complex_message.setPlainText(str(keycode))
+        # 檢查按下按鍵
+        # event.key() == Qt.Key.Key_C -> 檢查C鍵
+        # event.modifiers() & Qt.KeyboardModifier.ControlModifier -> 檢查Ctrl修飾鍵
+        if event.key() == Qt.Key.Key_C and (event.modifiers() & Qt.KeyboardModifier.ControlModifier):
+            # selection = self.ui.directory_table.selectedIndexes()
+            # self.ui.test_complex_message.setPlainText(
+            #     f'複製列index: {selection}')
+            self.ui.test_complex_message.setPlainText('Good')
 
 
 if __name__ == "__main__":
