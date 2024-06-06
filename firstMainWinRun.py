@@ -78,7 +78,7 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             # 存入dataframe
             _human_data = [human_name, self.gender, self.job, human_birthday]
             self.df_directory.loc[row_count] = _human_data
-            self.df_directory.to_clipboard(index=False)
+            # self.df_directory.to_clipboard(index=False)
 
             # 存入表格
             self.directory_table.setItem(row_count, 0, _human_name)
@@ -92,14 +92,14 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
     def gender_select(self, button) -> None:
         self.gender = button.text()
         # 測試訊息
-        self.test_message.setText(f'性別: {self.gender}')
+        # self.test_message.setText(f'性別: {self.gender}')
 
     # 下拉式選單的訊號測試
     @Slot()
     def job_select(self, index, combo_box) -> None:
         self.job = combo_box.currentText()
         # 測試訊息
-        self.test_complex_message.setPlainText(f'職業: {self.job}\n第{index}項')
+        # self.test_complex_message.setPlainText(f'職業: {self.job}\n第{index}項')
 
     # 檢查姓名欄是否為空
     def empty_name_warning_message(self):
@@ -108,17 +108,27 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
 
     # 鍵盤Ctrl + C複製
     def keyPressEvent(self, event) -> None:
-        keycode = event.key()
-        # super().keyPressEvent(event)
-        self.test_complex_message.setPlainText(str(keycode))
+        super().keyPressEvent(event)
+
         # 檢查按下按鍵
         # event.key() == Qt.Key.Key_C -> 檢查C鍵
         # event.modifiers() & Qt.KeyboardModifier.ControlModifier -> 檢查Ctrl修飾鍵
         if event.key() == Qt.Key.Key_C and (event.modifiers() & Qt.KeyboardModifier.ControlModifier):
-            # selection = self.directory_table.selectedIndexes()
-            # self.test_complex_message.setPlainText(
-            #     f'複製列index: {selection}')
-            self.test_complex_message.setPlainText('Good')
+
+            # 取得選取列資訊
+            # 回傳QTableWidgetItem的list
+            selection = self.directory_table.selectedIndexes()
+            # QTableWidgetItem取出row index
+            selected_row_list = [row_index.row() for row_index in selection]
+
+            # 從dataframe複製指定row至clipboard
+            df_directory_copy = self.df_directory.iloc[selected_row_list]
+            df_directory_copy.to_clipboard(index=False)
+
+            # 測試訊息
+            # self.test_complex_message.setPlainText(f'複製列index: {selection}')
+            # self.test_message.setText(f'Type: {selected_row_list}')
+            # self.test_complex_message.setPlainText('Good')
 
 
 if __name__ == "__main__":
