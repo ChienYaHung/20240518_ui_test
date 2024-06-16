@@ -6,7 +6,7 @@ python ui介面練習
 2. 輸出至CSV(pandas)
 3. 圖表繪製(matplotlib)
 
-說明
+說明  
 firstMainWinRun.py:   
 邏輯檔案，設定程式功能，讀取介面檔案(**.py**)並實例化
 
