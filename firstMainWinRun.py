@@ -124,11 +124,19 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         msgBox = QMessageBox.warning(
             self, '內容異常', '請輸入姓名', QMessageBox.Ok, QMessageBox.Ok)
 
+    @Slot()
     # 複製表內資訊
     def copy_Table_Content(self):
+
         selection = self.directory_table.selectedIndexes()
+
         # QTableWidgetItem取出row index
+        # 若選擇多欄會回傳重複index
         selected_row_list = [row_index.row() for row_index in selection]
+        selected_row_list = list(set(selected_row_list))  # 移除重複index
+
+        # 測試訊息
+        # self.test_complex_message.setPlainText(str(selected_row_list))
 
         # 從dataframe複製指定row至clipboard
         df_directory_copy = self.df_directory.iloc[selected_row_list]
