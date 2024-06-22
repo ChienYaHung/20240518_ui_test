@@ -36,6 +36,9 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # 讓日期選擇區顯示今天日期
         self.birthday_input.setDate(QDate.currentDate())
 
+        # 定義選單內項目
+        self.createActions()
+
         # slot區
         self.save_data_button.clicked.connect(
             self.save_input_to_directory)  # 儲存資訊至表格
@@ -49,6 +52,21 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             lambda: self.gender_select(self.gender_other))
         self.job_box.activated.connect(
             lambda x: self.job_select(x, self.job_box))
+
+    # 新增右鍵複製選單
+    def contextMenuEvent(self, event):
+
+        # 建立選單物件
+        # 此物件在表格之下
+        menu = QMenu(self)
+
+        # 新增選單內項目
+        menu.addAction(self.copyAct)
+
+        # exec: 執行menu物件
+        # event.globalPos(): 滑鼠右鍵點選的位置
+        # event.globalPos()作為參數可以指定選單，出現在鼠標的位置
+        menu.exec(event.globalPos())
 
     @Slot()
     def save_input_to_directory(self) -> None:
@@ -106,6 +124,16 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         msgBox = QMessageBox.warning(
             self, '內容異常', '請輸入姓名', QMessageBox.Ok, QMessageBox.Ok)
 
+    # 複製表內資訊
+    def copy_Table_Content(self):
+        selection = self.directory_table.selectedIndexes()
+        # QTableWidgetItem取出row index
+        selected_row_list = [row_index.row() for row_index in selection]
+
+        # 從dataframe複製指定row至clipboard
+        df_directory_copy = self.df_directory.iloc[selected_row_list]
+        df_directory_copy.to_clipboard(index=False)
+
     # 鍵盤Ctrl + C複製
     def keyPressEvent(self, event) -> None:
         super().keyPressEvent(event)
@@ -115,24 +143,33 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # event.modifiers() & Qt.KeyboardModifier.ControlModifier -> 檢查Ctrl修飾鍵
         if event.key() == Qt.Key.Key_C and (event.modifiers() & Qt.KeyboardModifier.ControlModifier):
 
-            # 取得選取列資訊
-            # 回傳QTableWidgetItem的list
-            selection = self.directory_table.selectedIndexes()
-            # QTableWidgetItem取出row index
-            selected_row_list = [row_index.row() for row_index in selection]
+            self.copy_Table_Content()
 
-            # 從dataframe複製指定row至clipboard
-            df_directory_copy = self.df_directory.iloc[selected_row_list]
-            df_directory_copy.to_clipboard(index=False)
+    # 定義選單內項目
+    def createActions(self):
+        self.copyAct = QAction("&Copy")
+        self.copyAct.setShortcuts(QKeySequence.Copy)
+        self.copyAct.setStatusTip(
+            "Copy the current selection's contents to the clipboard")
+        self.copyAct.triggered.connect(self.copy_Table_Content)
 
-            # 測試訊息
-            # self.test_complex_message.setPlainText(f'複製列index: {selection}')
-            # self.test_message.setText(f'Type: {selected_row_list}')
-            # self.test_complex_message.setPlainText('Good')
+        # TODO:新增上方功能列
+        # TODO:新增存出csv功能
+        # TODO:新增讀取csv功能
+        # TODO:新增性別/職業的互動式長條圖
 
 
 if __name__ == "__main__":
+
+    # 建立QApplication物件，管理UI內各種widget
     app = QApplication(sys.argv)
+
+    # 將UI實體化
     myWin = MyMainWindow()
+
+    # 顯示UI
     myWin.show()
+
+    # app.exec()開啟app
+    # exec():使app 進入loop並保持開啟，直到exit()被呼叫
     sys.exit(app.exec())
