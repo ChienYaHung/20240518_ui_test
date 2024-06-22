@@ -1,4 +1,4 @@
-# python ui介面練習  
+# Python ui介面練習  
 使用模組:PySide6  
 
 ## 功能
