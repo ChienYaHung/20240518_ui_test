@@ -47,6 +47,8 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             self.save_Directory_as_CSV)  # 儲存資訊成CSV
         self.read_csv_button.clicked.connect(
             self.read_CSV_to_Directory)  # 讀取CSV檔案
+        self.remove_data_Button.clicked.connect(
+            self.remove_selection_row)  # 讀取CSV檔案
 
         # 性別選單觸發
         # 選擇時觸發
@@ -168,7 +170,32 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         self.copyAct.triggered.connect(self.copy_Table_Content)
 
     # TODO:新增上方功能列
-    # TODO:刪除所選欄位
+
+    # 刪除所選欄位
+    @Slot()
+    def remove_selection_row(self):
+
+        # 取得選擇欄位，可一次選取多行
+        selection = self.directory_table.selectedIndexes()
+
+        # QTableWidgetItem取出row index
+        # 若選擇多欄會回傳重複index
+        selected_row_list = [row_index.row() for row_index in selection]
+        selected_row_list = list(set(selected_row_list))  # 移除重複index
+
+        # 移除表格介面內的資訊
+        for i in selected_row_list:
+            self.directory_table.removeRow(i)
+
+        # 移除df內的指定資訊
+        self.df_directory.drop(selected_row_list, axis=0, inplace=True)
+        # 因selected_row_list讀取的是表格介面行號，
+        # 須重設df之index使表格介面行號與index保持一致
+        self.df_directory.reset_index(drop=True, inplace=True)
+
+        # 測試訊息
+        # self.test_complex_message.setPlainText(str(selected_row_list))
+        # self.df_directory.to_clipboard()
 
     # 存出csv功能
     @Slot()
@@ -221,7 +248,7 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # 測試訊息
         # self.test_complex_message.setPlainText('讀檔路徑如下：\n' + type(row_count))
         # self.test_complex_message.setPlainText(f'存檔路徑如下：\n{row_count}')
-        self.df_directory.to_clipboard()
+        # self.df_directory.to_clipboard()
 
     # TODO:新增性別/職業的互動式長條圖
 
