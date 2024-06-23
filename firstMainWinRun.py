@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import os
 
 from PySide6.QtCore import *
 from PySide6.QtUiTools import QUiLoader
@@ -42,6 +43,8 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # slot區
         self.save_data_button.clicked.connect(
             self.save_input_to_directory)  # 儲存資訊至表格
+        self.save_csv_button.clicked.connect(
+            self.save_Directory_as_CSV)  # 儲存資訊成CSV
         # 性別選單觸發
         # 選擇時觸發
         self.gender_man.toggled.connect(
@@ -58,7 +61,7 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
 
         # 建立選單物件
         # 此物件在表格之下
-        menu = QMenu(self)
+        menu = QMenu(self.directory_table)
 
         # 新增選單內項目
         menu.addAction(self.copyAct)
@@ -161,10 +164,24 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             "Copy the current selection's contents to the clipboard")
         self.copyAct.triggered.connect(self.copy_Table_Content)
 
-        # TODO:新增上方功能列
-        # TODO:新增存出csv功能
-        # TODO:新增讀取csv功能
-        # TODO:新增性別/職業的互動式長條圖
+    # TODO:新增上方功能列
+
+    # 存出csv功能
+    @ Slot
+    def save_Directory_as_CSV(self):
+
+        # 取得存檔路徑
+        file_save_path, _ = QFileDialog.getSaveFileName(self, caption='另存新檔', dir=os.path.expanduser("~/Desktop"),
+                                                        filter="CSV UTF-8(逗號分隔)(*.csv)")
+        # 存成csv檔
+        self.df_directory.to_csv(
+            path_or_buf=file_save_path, index=False, encoding='utf-8-sig')
+
+        # 測試訊息
+        self.test_complex_message.setPlainText('存檔路徑如下：\n' + file_save_path)
+
+    # TODO:新增讀取csv功能
+    # TODO:新增性別/職業的互動式長條圖
 
 
 if __name__ == "__main__":
