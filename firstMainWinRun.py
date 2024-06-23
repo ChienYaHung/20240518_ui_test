@@ -7,7 +7,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-import pandas as pd
+import pandas as pd  # type: ignore
 # from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 #                             QMetaObject, QObject, QPoint, QRect,
 #                             QSize, QTime, QUrl, Qt, QFile, QIODevice)
@@ -45,6 +45,9 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             self.save_input_to_directory)  # 儲存資訊至表格
         self.save_csv_button.clicked.connect(
             self.save_Directory_as_CSV)  # 儲存資訊成CSV
+        self.read_csv_button.clicked.connect(
+            self.read_CSV_to_Directory)  # 讀取CSV檔案
+
         # 性別選單觸發
         # 選擇時觸發
         self.gender_man.toggled.connect(
@@ -165,9 +168,10 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         self.copyAct.triggered.connect(self.copy_Table_Content)
 
     # TODO:新增上方功能列
+    # TODO:刪除所選欄位
 
     # 存出csv功能
-    @ Slot
+    @Slot()
     def save_Directory_as_CSV(self):
 
         # 取得存檔路徑
@@ -178,9 +182,47 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             path_or_buf=file_save_path, index=False, encoding='utf-8-sig')
 
         # 測試訊息
-        self.test_complex_message.setPlainText('存檔路徑如下：\n' + file_save_path)
+        self.test_complex_message.setPlainText(f'存檔路徑如下：\n{file_save_path}')
 
-    # TODO:新增讀取csv功能
+    # 讀取csv功能
+    @Slot()
+    def read_CSV_to_Directory(self):
+
+        # 取得讀檔路徑
+        read_csv_path, _ = QFileDialog.getOpenFileName(self, caption='開啟舊檔', dir=os.path.expanduser("~/Desktop"),
+                                                       filter="CSV UTF-8(逗號分隔)(*.csv)")
+
+        # TODO:新增資料格式檢查
+
+        self.df_directory = pd.read_csv(read_csv_path)  # 讀取csv檔進df內
+
+        df_row_count, df_col_count = self.df_directory.shape  # 取得資料行列數
+        self.directory_table.clearContents()  # 清空表格
+        self.directory_table.setRowCount(df_row_count)  # 設定表格列數與資料相同
+
+        # 將df資訊寫入表格視窗內
+        for i in range(df_row_count):
+
+            # 逐列讀取df內資訊
+            name, gender, job, birthday = self.df_directory.loc[i]
+
+            # 需轉成Item格式
+            _human_name = QTableWidgetItem(name)
+            _human_gender = QTableWidgetItem(gender)
+            _human_job = QTableWidgetItem(job)
+            _human_birthday = QTableWidgetItem(birthday)
+
+            # 存入表格
+            self.directory_table.setItem(i, 0, _human_name)
+            self.directory_table.setItem(i, 1, _human_gender)
+            self.directory_table.setItem(i, 2, _human_job)
+            self.directory_table.setItem(i, 3, _human_birthday)
+
+        # 測試訊息
+        # self.test_complex_message.setPlainText('讀檔路徑如下：\n' + type(row_count))
+        # self.test_complex_message.setPlainText(f'存檔路徑如下：\n{row_count}')
+        self.df_directory.to_clipboard()
+
     # TODO:新增性別/職業的互動式長條圖
 
 
