@@ -31,8 +31,9 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # 建立UI內部參數
         self.gender = '男'
         self.job = self.job_box.currentText()
+        self.column_title = ['姓名', '性別', '職業', '生日']
         self.df_directory = pd.DataFrame(
-            columns=['姓名', '性別', '職業', '生日'])  # 資料表
+            columns=self.column_title)  # 資料表
 
         # 讓日期選擇區顯示今天日期
         self.birthday_input.setDate(QDate.currentDate())
@@ -127,10 +128,15 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # 測試訊息
         # self.test_complex_message.setPlainText(f'職業: {self.job}\n第{index}項')
 
-    # 檢查姓名欄是否為空
+    # 姓名欄為空的警告
     def empty_name_warning_message(self):
         msgBox = QMessageBox.warning(
             self, '內容異常', '請輸入姓名', QMessageBox.Ok, QMessageBox.Ok)
+
+    # 讀取錯誤檔案的警告
+    def empty_file_warning_message(self):
+        msgBox = QMessageBox.warning(
+            self, '讀取檔案錯誤', '格式不符', QMessageBox.Ok, QMessageBox.Ok)
 
     @Slot()
     # 複製表內資訊
@@ -219,36 +225,42 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         read_csv_path, _ = QFileDialog.getOpenFileName(self, caption='開啟舊檔', dir=os.path.expanduser("~/Desktop"),
                                                        filter="CSV UTF-8(逗號分隔)(*.csv)")
 
-        # TODO:新增資料格式檢查
+        df_directory_from_file = pd.read_csv(read_csv_path)  # 讀取csv檔進df內
+        file_column = list(df_directory_from_file.columns)  # csv檔案開頭
 
-        self.df_directory = pd.read_csv(read_csv_path)  # 讀取csv檔進df內
+        if file_column == self.column_title:  # 資料格式檢查
 
-        df_row_count, df_col_count = self.df_directory.shape  # 取得資料行列數
-        self.directory_table.clearContents()  # 清空表格
-        self.directory_table.setRowCount(df_row_count)  # 設定表格列數與資料相同
+            self.df_directory = df_directory_from_file
 
-        # 將df資訊寫入表格視窗內
-        for i in range(df_row_count):
+            df_row_count, df_col_count = self.df_directory.shape  # 取得資料行列數
+            self.directory_table.clearContents()  # 清空表格
+            self.directory_table.setRowCount(df_row_count)  # 設定表格列數與資料相同
 
-            # 逐列讀取df內資訊
-            name, gender, job, birthday = self.df_directory.loc[i]
+            # 將df資訊寫入表格視窗內
+            for i in range(df_row_count):
 
-            # 需轉成Item格式
-            _human_name = QTableWidgetItem(name)
-            _human_gender = QTableWidgetItem(gender)
-            _human_job = QTableWidgetItem(job)
-            _human_birthday = QTableWidgetItem(birthday)
+                # 逐列讀取df內資訊
+                name, gender, job, birthday = self.df_directory.loc[i]
 
-            # 存入表格
-            self.directory_table.setItem(i, 0, _human_name)
-            self.directory_table.setItem(i, 1, _human_gender)
-            self.directory_table.setItem(i, 2, _human_job)
-            self.directory_table.setItem(i, 3, _human_birthday)
+                # 需轉成Item格式
+                _human_name = QTableWidgetItem(name)
+                _human_gender = QTableWidgetItem(gender)
+                _human_job = QTableWidgetItem(job)
+                _human_birthday = QTableWidgetItem(birthday)
 
-        # 測試訊息
-        # self.test_complex_message.setPlainText('讀檔路徑如下：\n' + type(row_count))
-        # self.test_complex_message.setPlainText(f'存檔路徑如下：\n{row_count}')
-        # self.df_directory.to_clipboard()
+                # 存入表格
+                self.directory_table.setItem(i, 0, _human_name)
+                self.directory_table.setItem(i, 1, _human_gender)
+                self.directory_table.setItem(i, 2, _human_job)
+                self.directory_table.setItem(i, 3, _human_birthday)
+
+            # 測試訊息
+            # self.test_complex_message.setPlainText('讀檔路徑如下：\n' + type(row_count))
+            # self.test_complex_message.setPlainText(f'存檔路徑如下：\n{row_count}')
+            # self.df_directory.to_clipboard()
+
+        else:  # 若資料格式錯誤
+            self.empty_file_warning_message()
 
     # TODO:新增性別/職業的互動式長條圖
 
