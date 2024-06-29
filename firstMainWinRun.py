@@ -7,7 +7,9 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-import pandas as pd  # type: ignore
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 # from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 #                             QMetaObject, QObject, QPoint, QRect,
 #                             QSize, QTime, QUrl, Qt, QFile, QIODevice)
@@ -44,6 +46,8 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
         # slot區
         self.save_data_button.clicked.connect(
             self.save_input_to_directory)  # 儲存資訊至表格
+        self.save_data_button.clicked.connect(
+            self.Bar_Chart_drawing)  # 儲存資訊至表格
         self.save_csv_button.clicked.connect(
             self.save_Directory_as_CSV)  # 儲存資訊成CSV
         self.read_csv_button.clicked.connect(
@@ -263,6 +267,22 @@ class MyMainWindow(QMainWindow, Ui_mainWindow):
             self.empty_file_warning_message()
 
     # TODO:新增性別/職業的互動式長條圖
+    def Bar_Chart_drawing(self):
+        plt.rcParams['font.family'] = ['Microsoft JhengHei']  # 正常顯示中文
+        df_directory_pivot = pd.pivot_table(self.df_directory, values='姓名', index=['職業'],
+                                            # 轉換df格式
+                                            columns=['性別'], aggfunc="count")
+        ax = df_directory_pivot.plot(kind="bar")
+        fig = ax.get_figure()
+        # Change the plot dimensions (width, height)
+        fig.set_size_inches(8, 6)
+        # Change the axes labels
+        ax.set_ylabel('人數')
+        ax.set_title('職業與性別分布圖')
+        ax.legend(loc='upper left', ncols=3)
+
+        # Use this to show the plot in a new window
+        plt.show()
 
 
 if __name__ == "__main__":
